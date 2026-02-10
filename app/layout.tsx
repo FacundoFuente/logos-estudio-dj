@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
+const siteUrl = "logosestudiodj.com.ar"
 export const metadata: Metadata = {
   title: "Logos Estudio DJ | Clases de DJ en La Plata",
   description:
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/logo-estudio-dj.png",
+        url: `${siteUrl}/logos-estudio-info.jpeg`,
         width: 1200,
         height: 630,
         alt: "Logos Estudio DJ",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     title: "Logos Estudio DJ | Clases de DJ en La Plata",
     description:
       "Clases de DJ en La Plata con cabina profesional. Entrenamiento real y seguimiento personalizado.",
-    images: ["/logo-estudio-dj.png"],
+    images: [`${siteUrl}/logos-estudio-info.jpeg`],
   },
 };
 
