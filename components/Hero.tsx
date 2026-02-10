@@ -407,6 +407,9 @@ export default function Hero() {
           scQueueIndexRef.current = Math.floor(
             Math.random() * scQueueRef.current.length
           );
+          const queued = scSoundsRef.current[scQueueRef.current[scQueueIndexRef.current]];
+          if (queued?.title) setNowPlaying(queued.title);
+          if (queued?.user?.username) setNowUser(queued.user.username);
           playIndex(scQueueRef.current[scQueueIndexRef.current], true);
         });
       });
