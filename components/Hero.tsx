@@ -65,7 +65,7 @@ const students: Student[] = [
   },
   {
     name: "Nani Varela",
-    label: "@nani.varela",
+    label: "@nani.varela_",
     img: "/imagenes/nani-varela-imagen.jpeg",
     video: "/videos/nani-varela-video.mp4",
   },
@@ -137,7 +137,7 @@ export default function Hero() {
   )}&color=%230a0a0a&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false`;
   const scIframeRef = useRef<HTMLIFrameElement | null>(null);
   const scWidgetRef = useRef<any>(null);
-  const [nowPlaying, setNowPlaying] = useState("LOGOS Radio");
+  const [nowPlaying, setNowPlaying] = useState("Logos Estudio DJ Radio");
   const [nowUser, setNowUser] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [scReady, setScReady] = useState(false);
@@ -159,6 +159,7 @@ export default function Hero() {
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
   }, []);
+
 
   useEffect(() => {
     const carousel = carouselRef.current;
@@ -407,9 +408,6 @@ export default function Hero() {
           scQueueIndexRef.current = Math.floor(
             Math.random() * scQueueRef.current.length
           );
-          const queued = scSoundsRef.current[scQueueRef.current[scQueueIndexRef.current]];
-          if (queued?.title) setNowPlaying(queued.title);
-          if (queued?.user?.username) setNowUser(queued.user.username);
           playIndex(scQueueRef.current[scQueueIndexRef.current], true);
         });
       });
@@ -681,13 +679,14 @@ function StudentCard({
   const [hoverActive, setHoverActive] = useState(false);
   const [hoverPreload, setHoverPreload] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
+  const [forceLoad, setForceLoad] = useState(false);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const movedRef = useRef(false);
   const holdingRef = useRef(false);
 
   const active = isMobile ? !!showVideo : hoverActive;
   const shouldLoadVideo =
-    visible && (isMobile ? !!preloadVideo : hoverPreload || hoverActive);
+    visible && (isMobile ? !!preloadVideo || forceLoad : hoverPreload || hoverActive);
   const webmSrc = student.video.endsWith(".mp4")
     ? student.video.replace(/\.mp4$/, ".webm")
     : undefined;
@@ -735,6 +734,13 @@ function StudentCard({
         touchStartRef.current = { x: t.clientX, y: t.clientY };
         movedRef.current = false;
         holdingRef.current = true;
+        setForceLoad(true);
+        if (ref.current) {
+          const playPromise = ref.current.play();
+          if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch(() => {});
+          }
+        }
         onHoldStart?.();
       }}
       onTouchMove={(e) => {
@@ -777,7 +783,8 @@ function StudentCard({
         muted
         loop
         playsInline
-        preload="metadata"
+        autoPlay
+        preload={isMobile ? "auto" : "metadata"}
         onLoadedData={() => {
           setVideoReady(true);
           if (active) {
