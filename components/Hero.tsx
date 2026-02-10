@@ -124,6 +124,7 @@ export default function Hero() {
   const [mobileIndex, setMobileIndex] = useState(0);
   const [mobilePhase, setMobilePhase] = useState<"image" | "video">("image");
   const [holdIndex, setHoldIndex] = useState<number | null>(null);
+  const [manualPlayIndex, setManualPlayIndex] = useState<number | null>(null);
   const cycleTimerRef = useRef<number | null>(null);
   const scrollAnimRef = useRef<number | null>(null);
   const stepRef = useRef(0);
@@ -274,13 +275,15 @@ export default function Hero() {
       return;
     }
 
-    const delay = mobilePhase === "image" ? 1000 : 4000;
+    const videoDelay = manualPlayIndex === mobileIndex ? 4000 : 2000;
+    const delay = mobilePhase === "image" ? 1000 : videoDelay;
     cycleTimerRef.current = window.setTimeout(() => {
       if (mobilePhase === "image") {
         setMobilePhase("video");
       } else {
         setMobilePhase("image");
         setMobileIndex((i) => (i + 1) % students.length);
+        setManualPlayIndex(null);
         const el = carouselRef.current;
         if (el && stepRef.current) {
           const start = el.scrollLeft;
@@ -315,7 +318,7 @@ export default function Hero() {
     return () => {
       if (cycleTimerRef.current) window.clearTimeout(cycleTimerRef.current);
     };
-  }, [isMobile, mobilePhase, holdIndex, cycleTick]);
+  }, [isMobile, mobilePhase, holdIndex, cycleTick, manualPlayIndex, mobileIndex]);
 
   useEffect(() => {
     const onEnd = () => {
@@ -643,10 +646,19 @@ export default function Hero() {
                 isMobile={isMobile}
                 preloadVideo={isMobileActive}
                 showVideo={showVideo}
+                onManualPlay={() => {
+                  if (!isMobile) return;
+                  setHoldIndex(null);
+                  setManualPlayIndex(baseIndex);
+                  setMobileIndex(baseIndex);
+                  setMobilePhase("video");
+                  setCycleTick((t) => t + 1);
+                }}
                 onHoldStart={() => setHoldIndex(baseIndex)}
                 onHoldEnd={() => {
                   setHoldIndex(null);
                   setMobilePhase("image");
+                  setManualPlayIndex(null);
                   setCycleTick((t) => t + 1);
                 }}
               />
@@ -666,6 +678,7 @@ function StudentCard({
   showVideo,
   onHoldStart,
   onHoldEnd,
+  onManualPlay,
 }: {
   student: Student;
   isMobile: boolean;
@@ -673,6 +686,7 @@ function StudentCard({
   showVideo?: boolean;
   onHoldStart?: () => void;
   onHoldEnd?: () => void;
+  onManualPlay?: () => void;
 }) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const [visible, setVisible] = useState(false);
@@ -792,6 +806,41 @@ function StudentCard({
           active && videoReady ? "opacity-0" : "opacity-100"
         }`}
       />
+
+      {isMobile && !active && (
+        <button
+          type="button"
+          aria-label={`Reproducir ${student.name}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onManualPlay?.();
+            setForceLoad(true);
+            if (ref.current) {
+              const playPromise = ref.current.play();
+              if (playPromise && typeof playPromise.catch === "function") {
+                playPromise.catch(() => {});
+              }
+            }
+          }}
+          onTouchStart={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onManualPlay?.();
+            setForceLoad(true);
+            if (ref.current) {
+              const playPromise = ref.current.play();
+              if (playPromise && typeof playPromise.catch === "function") {
+                playPromise.catch(() => {});
+              }
+            }
+          }}
+          className="absolute inset-0 grid place-items-center"
+        >
+          <span className="grid h-12 w-12 place-items-center rounded-full bg-white/60 text-black shadow-lg backdrop-blur border border-white/60">
+            <span className="material-symbols-outlined text-3xl">play_arrow</span>
+          </span>
+        </button>
+      )}
 
       <video
         ref={ref}
