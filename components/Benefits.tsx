@@ -138,16 +138,12 @@ export default function Benefits() {
       </div>
       <style jsx>{`
         .marquee-shell {
-          display: flex;
-          align-items: center;
           overflow: hidden;
           max-width: 100%;
-          min-height: 3.5rem;
         }
 
         .marquee-track {
           display: flex;
-          align-items: center;
           width: max-content;
           animation: marquee 26s linear infinite;
           will-change: transform;
@@ -155,13 +151,11 @@ export default function Benefits() {
 
         .marquee-group {
           display: flex;
-          align-items: center;
           gap: 12px;
           padding-right: 12px;
         }
 
         .marquee-logo {
-          display: block;
           flex: 0 0 auto;
           opacity: 0.85;
           filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));

@@ -672,13 +672,15 @@ function StudentCard({
   const ref = useRef<HTMLVideoElement | null>(null);
   const [visible, setVisible] = useState(false);
   const [hoverActive, setHoverActive] = useState(false);
+  const [hoverPreload, setHoverPreload] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const movedRef = useRef(false);
   const holdingRef = useRef(false);
 
   const active = isMobile ? !!showVideo : hoverActive;
-  const shouldLoadVideo = visible && (isMobile ? !!preloadVideo : hoverActive);
+  const shouldLoadVideo =
+    visible && (isMobile ? !!preloadVideo : hoverPreload || hoverActive);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -709,8 +711,15 @@ function StudentCard({
         if (isMobile) return;
         setHoverActive((v) => !v);
       }}
-      onMouseEnter={() => setHoverActive(true)}
-      onMouseLeave={() => setHoverActive(false)}
+      onMouseEnter={() => {
+        if (isMobile) return;
+        setHoverPreload(true);
+        setHoverActive(true);
+      }}
+      onMouseLeave={() => {
+        if (isMobile) return;
+        setHoverActive(false);
+      }}
       onTouchStart={(e) => {
         const t = e.touches[0];
         touchStartRef.current = { x: t.clientX, y: t.clientY };
