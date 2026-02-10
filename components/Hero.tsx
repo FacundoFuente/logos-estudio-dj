@@ -785,15 +785,11 @@ function StudentCard({
           active && videoReady ? "opacity-100" : "opacity-0"
         }`}
       >
-        {shouldLoadVideo && webmSrc ? (
-          <source
-            src={webmSrc}
-            type="video/webm"
-            media="(min-width: 768px)"
-          />
-        ) : null}
         {shouldLoadVideo ? (
           <source src={student.video} type="video/mp4" />
+        ) : null}
+        {shouldLoadVideo && webmSrc ? (
+          <source src={webmSrc} type="video/webm" />
         ) : null}
       </video>
 
