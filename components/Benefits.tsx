@@ -42,18 +42,18 @@ export default function Benefits() {
             </p>
             <div className="mt-4 w-full max-w-full overflow-hidden rounded-2xl border border-white/10 bg-black/30">
               <div className="marquee-shell w-full px-4 py-3">
-                <div className="marquee-track">
+                <div className="marquee-track flex w-max items-center">
                   {marqueeGroups.map((group) => (
                     <div
                       key={`marquee-group-${group}`}
-                      className="marquee-group"
+                      className="marquee-group flex items-center gap-3 pr-3 shrink-0"
                       aria-hidden={group === 1}
                     >
                       {sharedBoothLogos.map((logo, index) => (
                         <img
                           key={`${logo.src}-${group}-${index}`}
                           src={logo.src}
-                          loading="lazy"
+                          loading="eager"
                           decoding="async"
                           alt={group === 0 ? logo.name : ""}
                           className="marquee-logo h-10 w-auto object-contain sm:h-12"
@@ -147,18 +147,29 @@ export default function Benefits() {
           width: max-content;
           animation: marquee 26s linear infinite;
           will-change: transform;
+          transform: translateZ(0);
+          backface-visibility: hidden;
         }
 
         .marquee-group {
           display: flex;
           gap: 12px;
           padding-right: 12px;
+          flex: 0 0 auto;
         }
 
         .marquee-logo {
           flex: 0 0 auto;
           opacity: 0.85;
           filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+        }
+        @media (max-width: 640px) {
+          .marquee-logo {
+            filter: none;
+          }
+          .marquee-track {
+            animation-duration: 22s;
+          }
         }
 
         @keyframes marquee {
