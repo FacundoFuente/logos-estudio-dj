@@ -507,7 +507,7 @@ export default function Hero() {
                 else w.pause();
               });
             }}
-            className={`grid h-7 w-7 place-items-center rounded-full border border-white/20 bg-black/40 text-white/90 transition-opacity ${
+            className={`grid h-7 w-7 place-items-center rounded-full border border-white/20 bg-black/40 text-white/90 transition-opacity cursor-pointer ${
               scReady ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
           >
