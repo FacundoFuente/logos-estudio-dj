@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-const siteUrl = "logosestudiodj.com.ar"
+
+const siteUrl = "https://logosestudiodj.com.ar";
+
 export const metadata: Metadata = {
   title: "Logos Estudio DJ | Clases de DJ en La Plata",
   description:
