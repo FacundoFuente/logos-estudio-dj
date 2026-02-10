@@ -624,25 +624,29 @@ export default function Hero() {
             }
           }}
         >
-          {loopStudents.map((s, i) => (
-            <StudentCard
-              key={i}
-              student={s}
-              isMobile={isMobile}
-              showVideo={
-                isMobile &&
-                (holdIndex === i % students.length ||
-                  (mobilePhase === "video" &&
-                    i % students.length === mobileIndex))
-              }
-              onHoldStart={() => setHoldIndex(i % students.length)}
-              onHoldEnd={() => {
-                setHoldIndex(null);
-                setMobilePhase("image");
-                setCycleTick((t) => t + 1);
-              }}
-            />
-          ))}
+          {loopStudents.map((s, i) => {
+            const baseIndex = i % students.length;
+            const isMobileActive = isMobile && baseIndex === mobileIndex;
+            const showVideo =
+              isMobile &&
+              (holdIndex === baseIndex ||
+                (mobilePhase === "video" && baseIndex === mobileIndex));
+            return (
+              <StudentCard
+                key={i}
+                student={s}
+                isMobile={isMobile}
+                preloadVideo={isMobileActive}
+                showVideo={showVideo}
+                onHoldStart={() => setHoldIndex(baseIndex)}
+                onHoldEnd={() => {
+                  setHoldIndex(null);
+                  setMobilePhase("image");
+                  setCycleTick((t) => t + 1);
+                }}
+              />
+            );
+          })}
         </div>
       </div>
 
@@ -653,12 +657,14 @@ export default function Hero() {
 function StudentCard({
   student,
   isMobile,
+  preloadVideo,
   showVideo,
   onHoldStart,
   onHoldEnd,
 }: {
   student: Student;
   isMobile: boolean;
+  preloadVideo?: boolean;
   showVideo?: boolean;
   onHoldStart?: () => void;
   onHoldEnd?: () => void;
@@ -666,16 +672,18 @@ function StudentCard({
   const ref = useRef<HTMLVideoElement | null>(null);
   const [visible, setVisible] = useState(false);
   const [hoverActive, setHoverActive] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const movedRef = useRef(false);
   const holdingRef = useRef(false);
 
   const active = isMobile ? !!showVideo : hoverActive;
-  const shouldLoadVideo = visible && active;
-useEffect(() => {
+  const shouldLoadVideo = visible && (isMobile ? !!preloadVideo : hoverActive);
+
+  useEffect(() => {
     const obs = new IntersectionObserver(
       ([entry]) => setVisible(entry.isIntersecting),
-      { threshold: 0.6 }
+      { threshold: 0.3 }
     );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
@@ -684,7 +692,7 @@ useEffect(() => {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (visible && active) {
+    if (visible && active && ref.current?.readyState !== 0) {
       const playPromise = el.play();
       if (playPromise && typeof playPromise.catch === "function") {
         playPromise.catch(() => {});
@@ -740,7 +748,7 @@ useEffect(() => {
         loading="lazy"
         decoding="async"
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-          active ? "opacity-0" : "opacity-100"
+          active && videoReady ? "opacity-0" : "opacity-100"
         }`}
       />
 
@@ -751,9 +759,19 @@ useEffect(() => {
         muted
         loop
         playsInline
-        preload="none"
+        preload="metadata"
+        onLoadedData={() => {
+          setVideoReady(true);
+          if (active) {
+            const playPromise = ref.current?.play();
+            if (playPromise && typeof playPromise.catch === "function") {
+              playPromise.catch(() => {});
+            }
+          }
+        }}
+        onEmptied={() => setVideoReady(false)}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-          active ? "opacity-100" : "opacity-0"
+          active && videoReady ? "opacity-100" : "opacity-0"
         }`}
       />
 
