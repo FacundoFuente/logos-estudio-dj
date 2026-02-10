@@ -140,6 +140,7 @@ export default function Hero() {
   const [nowPlaying, setNowPlaying] = useState("LOGOS Radio");
   const [nowUser, setNowUser] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
+  const [scReady, setScReady] = useState(false);
   const scSoundsRef = useRef<any[]>([]);
   const scQueueRef = useRef<number[]>([]);
   const scQueueIndexRef = useRef(0);
@@ -393,6 +394,7 @@ export default function Hero() {
       };
 
       scWidgetRef.current.bind(sc.Widget.Events.READY, () => {
+        setScReady(true);
         applyPendingSeek(true);
         if (scInitializedRef.current) return;
         scInitializedRef.current = true;
@@ -504,7 +506,9 @@ export default function Hero() {
                 else w.pause();
               });
             }}
-            className="grid h-7 w-7 place-items-center rounded-full border border-white/20 bg-black/40 text-white/90"
+            className={`grid h-7 w-7 place-items-center rounded-full border border-white/20 bg-black/40 text-white/90 transition-opacity ${
+              scReady ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
           >
             <span className="material-symbols-outlined text-[16px]">
               {isPlaying ? "pause" : "play_arrow"}
