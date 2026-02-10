@@ -4,7 +4,7 @@ const studioInfo = {
   title: "Horarios y Ubicación",
   description:
     "Consolas profesionales, monitores de referencia y un entorno pensado para practicar como en un club.",
-  image: "/logos-estudio-info.jpg",
+  image: "/logos-estudio-info.jpeg",
   addressLine1: "Avenida 66 1077",
   addressLine2: "C1900 La Plata, Provincia de Buenos Aires",
   mapPoint: "Avenida 66 1077, C1900 La Plata",
