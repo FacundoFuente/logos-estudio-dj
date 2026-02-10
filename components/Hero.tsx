@@ -681,6 +681,9 @@ function StudentCard({
   const active = isMobile ? !!showVideo : hoverActive;
   const shouldLoadVideo =
     visible && (isMobile ? !!preloadVideo : hoverPreload || hoverActive);
+  const webmSrc = student.video.endsWith(".mp4")
+    ? student.video.replace(/\.mp4$/, ".webm")
+    : undefined;
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -763,7 +766,6 @@ function StudentCard({
 
       <video
         ref={ref}
-        src={shouldLoadVideo ? student.video : undefined}
         poster={student.img}
         muted
         loop
@@ -782,7 +784,18 @@ function StudentCard({
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
           active && videoReady ? "opacity-100" : "opacity-0"
         }`}
-      />
+      >
+        {shouldLoadVideo && webmSrc ? (
+          <source
+            src={webmSrc}
+            type="video/webm"
+            media="(min-width: 768px)"
+          />
+        ) : null}
+        {shouldLoadVideo ? (
+          <source src={student.video} type="video/mp4" />
+        ) : null}
+      </video>
 
       {active && (
         <div className="absolute inset-0 ring-2 ring-purple-500 shadow-[0_0_25px_rgba(139,92,246,.6)] rounded-2xl" />
