@@ -680,7 +680,6 @@ function StudentCard({
   const [hoverPreload, setHoverPreload] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const [forceLoad, setForceLoad] = useState(false);
-  const [autoplayBlocked, setAutoplayBlocked] = useState(false);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const movedRef = useRef(false);
   const holdingRef = useRef(false);
@@ -710,14 +709,11 @@ function StudentCard({
     if (visible && active && ref.current?.readyState !== 0) {
       const playPromise = el.play();
       if (playPromise && typeof playPromise.catch === "function") {
-        playPromise.catch(() => {
-          if (isMobile) setAutoplayBlocked(true);
-        });
+        playPromise.catch(() => {});
       }
     } else {
       el.pause();
     }
-    if (!active) setAutoplayBlocked(false);
   }, [visible, active]);
 
   return (
@@ -822,27 +818,6 @@ function StudentCard({
           <source src={webmSrc} type="video/webm" />
         ) : null}
       </video>
-
-      {isMobile && autoplayBlocked && active && (
-        <div className="absolute inset-0 grid place-items-center bg-black/30">
-          <button
-            type="button"
-            onClick={() => {
-              setForceLoad(true);
-              if (ref.current) {
-                const playPromise = ref.current.play();
-                if (playPromise && typeof playPromise.catch === "function") {
-                  playPromise.catch(() => {});
-                }
-              }
-              setAutoplayBlocked(false);
-            }}
-            className="rounded-full bg-white/90 text-black px-4 py-2 text-sm font-semibold"
-          >
-            Tocar para reproducir
-          </button>
-        </div>
-      )}
 
       {active && (
         <div className="absolute inset-0 ring-2 ring-purple-500 shadow-[0_0_25px_rgba(139,92,246,.6)] rounded-2xl" />
