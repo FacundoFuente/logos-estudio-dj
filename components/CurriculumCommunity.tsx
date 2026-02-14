@@ -32,13 +32,6 @@ const sets: YouTubeSet[] = [
     style: "Live",
   },
   {
-    title: "LOGOS ESTUDIO EP #2",
-    student: "Facundo Fuente",
-    videoId: "haF0lqd3J80",
-    duration: "71 min",
-    style: "Progressive House",
-  },
-  {
     title: "Tengo paco, pero soy amoroso",
     student: "Joaquin Seara",
     videoId: "bVKImfZ7nlA",
@@ -64,6 +57,13 @@ const sets: YouTubeSet[] = [
     student: "Ilan Rosenfeld",
     videoId: "WoqEZHrsbm8",
     duration: "124 min",
+    style: "Progressive House",
+  },
+  {
+    title: "LOGOS ESTUDIO EP #2",
+    student: "Facundo Fuente",
+    videoId: "haF0lqd3J80",
+    duration: "71 min",
     style: "Progressive House",
   },
 ];
@@ -104,7 +104,7 @@ export default function CurriculumCommunity() {
             type="button"
             onClick={() => scrollByCard("left")}
             aria-label="Ver sets anteriores"
-            className="w-12 h-12 rounded-full border border-white/15 text-white/80 hover:text-white hover:border-white/40 transition-colors grid place-items-center opacity-60 hover:opacity-100"
+            className="w-12 h-12 rounded-full border border-white/35 bg-black/35 text-white/95 transition-all duration-200 grid place-items-center opacity-85 cursor-pointer hover:opacity-100 hover:scale-105 hover:text-white hover:border-white/70 hover:bg-white/12 hover:shadow-[0_14px_40px_rgba(0,0,0,0.45)]"
           >
             <span className="material-symbols-outlined text-xl">chevron_left</span>
           </button>
@@ -112,7 +112,7 @@ export default function CurriculumCommunity() {
             type="button"
             onClick={() => scrollByCard("right")}
             aria-label="Ver sets siguientes"
-            className="w-12 h-12 rounded-full border border-white/15 text-white/80 hover:text-white hover:border-white/40 transition-colors grid place-items-center opacity-60 hover:opacity-100"
+            className="w-12 h-12 rounded-full border border-white/35 bg-black/35 text-white/95 transition-all duration-200 grid place-items-center opacity-85 cursor-pointer hover:opacity-100 hover:scale-105 hover:text-white hover:border-white/70 hover:bg-white/12 hover:shadow-[0_14px_40px_rgba(0,0,0,0.45)]"
           >
             <span className="material-symbols-outlined text-xl">chevron_right</span>
           </button>

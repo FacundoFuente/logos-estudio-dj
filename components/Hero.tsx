@@ -485,7 +485,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen bg-background-dark text-white overflow-hidden">
+    <section className="relative min-h-[min(100svh,920px)] bg-background-dark text-white overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
@@ -507,7 +507,7 @@ export default function Hero() {
                 else w.pause();
               });
             }}
-            className={`grid h-7 w-7 place-items-center rounded-full border border-white/20 bg-black/40 text-white/90 transition-opacity cursor-pointer ${
+            className={`grid h-7 w-7 place-items-center rounded-full border border-white/35 bg-black/35 text-white/95 cursor-pointer transition-all duration-200 hover:scale-105 hover:text-white hover:border-white/70 hover:bg-white/12 hover:shadow-[0_14px_40px_rgba(0,0,0,0.45)] ${
               scReady ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
           >

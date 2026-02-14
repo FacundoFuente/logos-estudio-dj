@@ -169,7 +169,7 @@ export default function Equipment() {
             type="button"
             onClick={() => scrollByCard("left")}
             aria-label="Ver equipamiento anterior"
-            className="absolute left-3 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/50 text-white/80 backdrop-blur hover:text-white hover:border-white/50"
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full border border-white/35 bg-black/35 text-white/95 backdrop-blur cursor-pointer transition-all duration-200 hover:scale-105 hover:text-white hover:border-white/70 hover:bg-white/12 hover:shadow-[0_14px_40px_rgba(0,0,0,0.45)]"
           >
             <span className="material-symbols-outlined text-xl">chevron_left</span>
           </button>
@@ -179,7 +179,7 @@ export default function Equipment() {
             type="button"
             onClick={() => scrollByCard("right")}
             aria-label="Ver equipamiento siguiente"
-            className="absolute right-3 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/50 text-white/80 backdrop-blur hover:text-white hover:border-white/50"
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full border border-white/35 bg-black/35 text-white/95 backdrop-blur cursor-pointer transition-all duration-200 hover:scale-105 hover:text-white hover:border-white/70 hover:bg-white/12 hover:shadow-[0_14px_40px_rgba(0,0,0,0.45)]"
           >
             <span className="material-symbols-outlined text-xl">chevron_right</span>
           </button>

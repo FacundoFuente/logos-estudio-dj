@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const siteUrl = "https://logosestudiodj.com.ar";
 
@@ -86,12 +87,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
       <body className="antialiased">
         {children}
+        <GoogleAnalytics />
         <a
           href="https://wa.me/5492213513585?text=Hola%2C%20estaba%20interesado%20en%20las%20clases%20de%20DJ"
           target="_blank"
